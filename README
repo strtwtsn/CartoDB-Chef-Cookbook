@@ -7,3 +7,11 @@ More information available www.cartodb.com
 What is the purpose of this repo?
 
 The purpose of this repo is to provide a chef cookbook which will automate the installation process of CartoDB.
+
+Where should I install CartoDB?
+
+This Chef cookbook has been successfully tested on a “Small” Natty Narwhal Amazon EC2 instance built using the ami from Canonical.
+
+http://cloud-images.ubuntu.com/releases/11.04/release/
+
+
