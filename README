@@ -35,6 +35,7 @@ PostgresSQL
 PostGIS
 Redis
 Mapnik
+
 It is still work in progress so some manual configuration will be needed following the install.
 
 
