@@ -1,0 +1,1 @@
+What is CartoDB?CartoDB is an open source tool that allows for the storage and visualization of geospatial data on the web.More information available www.cartodb.comWhat is the purpose of this repo?The purpose of this repo is to provide a chef cookbook which will automate the installation process of CartoDB.
