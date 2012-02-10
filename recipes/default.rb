@@ -1,3 +1,11 @@
+#
+# Cookbook Name:: cartodb_github
+# Recipe:: default
+#
+# Copyright 2012, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
 execute "Install CartoDB and dependencies " do
 user "ubuntu"
 group "ubuntu"
@@ -84,3 +92,5 @@ sudo apt-get install -y build-essential libopenssl-ruby libcurl4-openssl-dev lib
 gem install passenger
 rvmsudo passenger-install-nginx-module --auto --prefix=/usr/local/nginx --auto-download
 sudo ldconfig
+EOH
+end
