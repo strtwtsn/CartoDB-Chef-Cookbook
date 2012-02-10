@@ -13,9 +13,9 @@ The purpose of this repo is to provide a chef cookbook which will automate the i
 Requirements?
 =============
 
-Chef
+This cookbook assumes you are running a Amazon EC2 instance and have RVM installed as the "ubuntu" user.  It should not be used on any "production" server.
 
-Tested on Chef 0.10
+Chef - Tested on Chef 0.10
 
 Platform
 
@@ -38,5 +38,86 @@ Mapnik
 Nginx
 
 It is still work in progress so some manual configuration will be needed following the install.
+
+
+What do I need to do after the install?
+=======================================
+
+cd /home/ubuntu/downloads/cartodb directory
+Say yes to the create a new gemset
+mv ~/.rvm/usr/lib ~/.rvm/usr/lib_rvm
+bundle install --binstubs
+rename both app_config.yml.sample and database.yml.sample to remove the .sample
+
+Postgres stuff
+
+sudo pg_dropcluster --stop 9.1 main
+sudo pg_createcluster --start -e UTF-8 9.1 main
+POSTGIS_SQL_PATH='pg_config --sharedir'/contrib/postgis-2.0
+sudo -u postgres createdb -E UTF8 template_postgis
+sudo -u postgres createlang -d template_postgis plpgsql
+sudo -u postgres psql -d postgres -c "UPDATE pg_database SET datistemplate='true' WHERE datname='template_postgis';"
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.0/postgis.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.0/spatial_ref_sys.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.0/legacy.sql
+sudo -u postgres psql -d template_postgis -f /usr/share/postgresql/9.1/contrib/postgis-2.0/legacy_compatibility_layer.sql
+sudo -u postgres psql -d template_postgis -c "GRANT ALL ON geometry_columns TO PUBLIC;"
+sudo -u postgres psql -d template_postgis -c "GRANT ALL ON spatial_ref_sys TO PUBLIC;"
+
+Edit pg_hba.conf to allow trust authentication for all zones.
+
+Restart postgresql by doing sudo /etc/init.d/postgresql restart
+
+Start Rails, Redis-Server, CartoDB-SQL-API and Windshaft.  The last 2 by doing node app.js development
+
+
+Now create a new cartodb user
+
+bundle exec rake cartodb:db:setup EMAIL=<Username> SUBDOMAIN=mysubdomain PASSWORD=<password> ADMIN_PASSWORD=<password>
+
+Create a symlink in /usr/bin by doing ln -s shp2pgsql
+
+Change app_config to replace all instances of "some secret" to "a0be302d0c2b616096974fdf0409a619".  This should be beside "secret_token"
+
+
+Nginx Config File
+
+Uncomment all location areas
+add:-
+
+root /home/ubuntu/downloads/cartodb/public
+passenger_enabled on;
+rails_env devlopement;
+
+
+In /usr/local/nginx/html create a symlink to /home/ubuntu/downloads/cartodb/public/
+
+
+Hostfile on remote PC
+
+127.0.0.1       admin.localhost.lan admin.testhost.lan
+127.0.0.1       mysubdomain.localhost.lan
+
+
+Hostfile on local PC
+
+Add
+
+<IP of EC2 instance> mysubdomain.localhost.lan
+
+
+
+
+Open a browser and go to http://mysubdomain.localhost.lan and login with the user you created.
+
+
+
+
+
+
+
+
+
+
 
 

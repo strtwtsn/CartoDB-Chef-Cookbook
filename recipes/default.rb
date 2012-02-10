@@ -1,24 +1,9 @@
-#
-# Cookbook Name:: CartoDB-Cookbook
-# Recipe:: default
-#
-# Copyright 2012, WCMC
-#
-# All rights reserved - Do Not Redistribute
-#
 execute "Install CartoDB and dependencies " do
 user "ubuntu"
 group "ubuntu"
 command <<-EOH
-sudo apt-get install build-essential libxslt-dev
-bash -s stable < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
-echo '[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm" # Load RVM function' >> ~/.bash_profile
-source .bash_profile
-rvm pkg install zlib
-rvm pkg install openssl
-rvm install 1.9.2 (rvm install 1.9.2 --with-openssl-dir=$rvm_path/usr)
-rvm use 1.9.2
-rvm use 1.9.2 --default
+sudo apt-get update
+sudo apt-get install -y build-essential libxslt-dev
 mkdir /home/ubuntu/downloads 
 cd /home/ubuntu/downloads 
 sudo apt-get install -y git-core libssl-dev 
@@ -34,7 +19,7 @@ sudo add-apt-repository ppa:pitti/postgresql
 sudo add-apt-repository ppa:ubuntugis/ubuntugis-unstable
 sudo add-apt-repository ppa:juan457/zorba
 sudo apt-get update
-sudo apt-get install -y libgdal-dev libgeos-dev libproj-dev postgresql-9.1 postgresql-server-dev-9.1 postgresql-contrib-9.1 gdal-bin
+sudo apt-get install -y libgdal-dev libgeos-dev libproj-dev postgresql-9.1 postgresql-server-dev-9.1 postgresql-contrib-9.1 gdal-bin postgresql-plpython-9.1
 sudo apt-get install -y subversion autoconf
 cd /home/ubuntu/downloads
 svn checkout http://svn.osgeo.org/postgis/trunk@8242 postgis
@@ -78,7 +63,7 @@ tar xjvf mapnik-2.0.0.tar.bz2
 cd /home/ubuntu/downloads/mapnik-2.0.0
 ./configure
 sudo python scons/scons.py install
-cd /home/ubuntu
+cd /home/ubuntu/downloads
 git clone git://github.com/Vizzuality/CartoDB-SQL-API.git
 cd CartoDB-SQL-API
 npm install
@@ -95,8 +80,7 @@ make
 sudo make install
 sudo apt-get update
 sudo apt-get install -y build-essential libopenssl-ruby libcurl4-openssl-dev libssl-dev zlib1g-dev
+/home/ubuntu/downloads/cartodb/public
 gem install passenger
 rvmsudo passenger-install-nginx-module --auto --prefix=/usr/local/nginx --auto-download
 sudo ldconfig
-EOH
-end
