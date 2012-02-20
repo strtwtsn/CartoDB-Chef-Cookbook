@@ -1,0 +1,73 @@
+What is CartoDB?
+===============
+
+CartoDB is an open source tool that allows for the storage and visualization of geospatial data on the web.
+
+More information available www.cartodb.com
+
+What is the purpose of this repo?
+=================================
+
+The purpose of this repo is to provide a chef cookbook which will automate the installation process of CartoDB.
+
+Requirements?
+=============
+
+This cookbook assumes that you are running Ubuntu on a clean new EC2 instance.  It should not be used on any server which has postgresql already installed.
+
+Chef - Tested on Chef 0.10
+
+Platform
+
+This Chef cookbook has been successfully tested on a “Small” Natty Narwhal Amazon EC2 instance built using the ami from Canonical.
+
+http://cloud-images.ubuntu.com/releases/11.04/release/
+
+
+What does this cookbook do?
+========================
+
+This cookbook will install the following packages:-
+
+Ruby
+Node
+PostgresSQL
+PostGIS
+Redis
+Mapnik
+Nginx
+
+What do I need to do after the install?
+=======================================
+
+After the install you will need to do the following:-
+
+add
+
+root /home/ubuntu/downloads/cartodb/public;
+passenger_enabled on;
+rails_env devlopement;
+
+to the nginx.conf file
+
+Add
+
+<IP of EC2 instance> mysubdomain.localhost.lan
+
+to the hostfile on your local computer.
+
+
+
+Open a browser and go to http://mysubdomain.localhost.lan and login with the user you created.
+
+
+
+
+
+
+
+
+
+
+
+
