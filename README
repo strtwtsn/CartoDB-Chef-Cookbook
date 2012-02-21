@@ -13,7 +13,7 @@ The purpose of this repo is to provide a chef cookbook which will automate the i
 Requirements?
 =============
 
-This cookbook assumes that you are running Ubuntu on a clean new EC2 instance.  It should not be used on any server which has postgresql already installed.
+This cookbook assumes that you are running Ubuntu on a clean new EC2 instance.  It should not be used on any server which has postgresql already installed as it will break the existing installation.
 
 Chef - Tested on Chef 0.10
 
@@ -60,7 +60,7 @@ to the hostfile on your local computer.
 
 Open a browser and go to http://mysubdomain.localhost.lan and login with the user you created.
 
-
+Ver1
 
 
 
